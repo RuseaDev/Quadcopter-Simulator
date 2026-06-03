@@ -16,8 +16,8 @@ R(phi)@R(theta)@R(psi) aka. R(roll)@R(pitch)@R(yaw)
 """
 def r_roll(phi):
     return np.array([[1, 0, 0],
-                     [0, np.cos(phi), np.sin(phi)],
-                     [0, -np.sin(phi), np.cos(phi)]])
+                     [0, np.cos(phi), -np.sin(phi)],
+                     [0, np.sin(phi), np.cos(phi)]])
 
 def r_pitch(theta):
     return np.array([[np.cos(theta), 0, np.sin(theta)],
@@ -25,8 +25,8 @@ def r_pitch(theta):
                      [-np.sin(theta), 0, np.cos(theta)]])
 
 def r_yaw(psi):
-    return np.array([[np.cos(psi), np.sin(psi), 0],
-                     [-np.sin(psi), np.cos(psi), 0],
+    return np.array([[np.cos(psi), -np.sin(psi), 0],
+                     [np.sin(psi), np.cos(psi), 0],
                      [0, 0, 1]])
 
 def w2b_rotation(phi, theta, psi):
@@ -59,9 +59,20 @@ class DronePlant:
                    
     def rotational_dynamics(self):
         # Derivatives for roll, pitch, yaw, omega_x, omega_y, omega_z 
+        roll, pitch, yaw = self.euler_angles
+        
+        # roll_dot =
+        # pitch_dot = 
+        # yaw_dot = 
+
+        omega_x_dot = 
+        omega_y_dot =
+        omega_z_dot = 
+
+        return roll_dot, pitch_dot, yaw_dot, omega_x_dot, omega_y_dot, omega_z_dot
         
 
 
     def motor_mixing(self);
-        #
+        # Torques and thrust will be written here
     
