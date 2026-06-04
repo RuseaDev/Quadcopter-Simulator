@@ -55,7 +55,7 @@ class DronePlant:
         self.torques = torques
 
 
-    def translational_dynamics(self, thrust, drag):
+    def translational_dynamics(self, thrust):
         '''
         Function's Purpose: Derivatives for x, y, z, v_x, v_y, v_z        
         Input: 
@@ -78,19 +78,26 @@ class DronePlant:
             - Update the current velocity using acceleration over a very small time step - t = 0.001
 
         '''
-
+        
+        '''
+        Note for the future: 
+            - This code temporarily don't have drag because it has not been calculated 
+            - Future code will have to include drag
+        '''
         # Grabbing input
         m = self.config.mass
         phi, theta, psi = self.euler_angles
         RM_b2w = b2w_rotatation(phi, theta, psi)
 
         thrust_world = RM_b2w @ thrust 
-        drag_world = RM_b2w @ drag
+        # drag_world = RM_b2w @ drag
         gravity = np.matrix([0, 0, g]).T
         delta_time = 0.001
 
         # Calculate velocity derivative
-        velocity_dot = (1.0 / m) * (thrust_world + drag_world) + gravity
+        # velocity_dot = (1.0 / m) * (thrust_world + drag_world) + gravity
+        
+        velocity_dot = (1.0 / m) * thrust_world + gravity
 
         # Calculate the positional derivative 
         velocity = self.velocity
