@@ -54,8 +54,49 @@ class DronePlant:
         self.omega = state_vectors[9:12]
         self.torques = torques
 
-    def translational_dynamics(self):
-        # Derivatives for x, y, z, v_x, v_y, v_z
+
+    def translational_dynamics(self, thrust, drag):
+        '''
+        Function's Purpose: Derivatives for x, y, z, v_x, v_y, v_z        
+        Input: 
+            - Force of Body Frame: Thrust, Drag, Gravity
+            - Sensor's Velocity 
+            - Drone's mass
+            - Euler's Angles
+            - g = 9.81
+        
+        Calculate Velocity Derivative: 
+            - Change force of body frame to intertial frame => Feed Euler angles to b2w rotational matrix 
+            
+            - Calculate d(Velocity) using the formula:
+                Ftotal = thrust + drag + grav
+                => m * a = thrust + drag + grav
+                => a = (1 / m) * (thrust + drag + m * g)
+                => v_dot = (1 / m) * (thrust + drag) + g
+
+        Calculate the Positional Derivative: 
+            - Update the current velocity using acceleration over a very small time step - t = 0.001
+
+        '''
+
+        # Grabbing input
+        m = self.config.mass
+        phi, theta, psi = self.euler_angles
+        RM_b2w = b2w_rotatation(phi, theta, psi)
+
+        thrust_world = RM_b2w @ thrust 
+        drag_world = RM_b2w @ drag
+        gravity = np.matrix([0, 0, g]).T
+        delta_time = 0.001
+
+        # Calculate velocity derivative
+        velocity_dot = (1.0 / m) * (thrust_world + drag_world) + gravity
+
+        # Calculate the positional derivative 
+        velocity = self.velocity
+        position_dot = velocity + velocity_dot * delta_time
+    
+        return velocity_dot, position_dot
 
                    
     def rotational_dynamics(self):
