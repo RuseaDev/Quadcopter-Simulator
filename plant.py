@@ -98,10 +98,7 @@ class DronePlant:
         # velocity_dot = (1.0 / m) * (thrust_world + drag_world) + gravity
         
         velocity_dot = (1.0 / m) * thrust_world + gravity
-
-        # Calculate the positional derivative 
-        velocity = self.velocity
-        position_dot = velocity + velocity_dot * delta_time
+        position_dot = self.velocity 
     
         return velocity_dot, position_dot
 
