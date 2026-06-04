@@ -3,12 +3,28 @@ from dataclasses import dataclass
 
 g = 9.81 # gravitational acceleration
 
+"""
+Our drone will be an X-configured drone.
+Motor 1      Motor 2
+          |
+          | 
+          |
+Motor 4      Motor 3
+
+Motor 1 and 3 spins clockwise.
+Motor 2 and 4 spin counterclockwise.
+
+"""
+
 @dataclass
 class DroneConfig:
     mass: float
     inertia: np.ndarray
     length: float
     # coefficients for thrust and drag will come later
+    kd: float
+    kt: float # coefficient for tau_roll and tau_pitch
+    kb: float # coefficient for tau_yaw
 
 """
 Rotational Matrix from body to world frame:
@@ -41,8 +57,13 @@ def b2w_rotatation(phi, theta, psi):
 """
 RK4 integration method
 """
-def RK4():
-    return None
+def RK4_step(f, t, y, h):
+    k1 = f(t, y)
+    k2 = f(t + h/2, y + (h/2) * k1)
+    k3 = f(t + h/2, y + (h/2) * k2)
+    k4 = f(t + h, y + h * k3)
+
+    return y + (h / 6) * (k1 + 2*k2 + 2*k3 + k4)
 
 
 class DronePlant:
@@ -54,8 +75,8 @@ class DronePlant:
         self.omega = state_vectors[9:12]
         self.torques = torques
 
-
     def translational_dynamics(self, thrust):
+        # Derivatives for x, y, z, v_x, v_y, v_z
         '''
         Function's Purpose: Derivatives for x, y, z, v_x, v_y, v_z        
         Input: 
@@ -78,26 +99,18 @@ class DronePlant:
             - Update the current velocity using acceleration over a very small time step - t = 0.001
 
         '''
-        
-        '''
-        Note for the future: 
-            - This code temporarily don't have drag because it has not been calculated 
-            - Future code will have to include drag
-        '''
+
         # Grabbing input
         m = self.config.mass
         phi, theta, psi = self.euler_angles
         RM_b2w = b2w_rotatation(phi, theta, psi)
 
         thrust_world = RM_b2w @ thrust 
-        # drag_world = RM_b2w @ drag
         gravity = np.matrix([0, 0, g]).T
         delta_time = 0.001
 
         # Calculate velocity derivative
-        # velocity_dot = (1.0 / m) * (thrust_world + drag_world) + gravity
-        
-        velocity_dot = (1.0 / m) * thrust_world + gravity
+        velocity_dot = (1.0 / m) * (thrust_world) + gravity
 
         # Calculate the positional derivative 
         velocity = self.velocity
@@ -133,4 +146,18 @@ class DronePlant:
     def motor_mixing(self):
         # Torques and thrust will be written here
         # How would I really write the torques here? 
-    
+        # Should return omega?
+        length = self.config.length
+        kt = self.config.kt
+        kb = self.config.kb
+        perpendicular_length = length/np.sqrt(2)
+
+        tau_roll, tau_pitch, tau_yaw = self.torques
+        tau_roll = kt*(-perpendicular_length * omega_1 ** 2 - perpendicular_length * omega_2 ** 2 + perpendicular_length + omega_3 ** 2 + perpendicular_length + omega_4 ** 2)
+        tau_pitch = -perpendicular_length * omega_1 ** 2 + perpendicular_length * omega_2 ** 2 - perpendicular_length + omega_3 ** 2 + perpendicular_length + omega_4 ** 2
+        tau_yaw = kb( -omega_1**2 + omega_2 ** 2 - omega_3 ** 2 + omega_4 ** 2)
+
+        return tau_roll, tau_pitch, tau_yaw
+
+
+
