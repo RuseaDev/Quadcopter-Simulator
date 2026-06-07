@@ -142,11 +142,11 @@ class DronePlant:
                          dwx, dwy, dwz])
 
 
-dt = 0.01
+# dt = 0.01
 
-t = np.arange(0, 10, dt)
+# t = np.arange(0, 10, dt)
 
-print(t)
+# print(t)
 
 
 
