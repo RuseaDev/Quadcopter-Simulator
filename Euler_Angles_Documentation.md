@@ -397,18 +397,20 @@ $$
 \omega_x + \dot{\psi}\sin\theta.
 $$
 
-Substitute $\dot{\psi} = \omega_y$:
+Substitute $\dot{\psi} = \omega_y\sin\phi + \omega_z\cos\phi$ to the equation:
 
 $$
 \dot{\phi}
 =
 \omega_x
 +
-\left(\omega_y\sin\phi + \omega_z\cos\phi\right)
-\sec\theta\sin\theta.
+\left(\omega_y\sin\phi 
++ 
+\omega_z\cos\phi\right)
+\sec\theta\sin\theta
 $$
 
-Use
+Because:
 
 $$
 \sec\theta\sin\theta
@@ -418,7 +420,7 @@ $$
 \tan\theta.
 $$
 
-Therefore,
+The equation becomes:
 
 $$
 \boxed{
@@ -426,11 +428,35 @@ $$
 =
 \omega_x
 +
-\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\tan\theta
+\left(\omega_y\sin\phi 
++ \omega_z\cos\phi\right)\tan\theta
 }
 $$
 
-The final inverse mapping is
+## Mapping Rotational Matrix
+
+We have: 
+$$
+\begin{aligned}
+\dot{\theta}
+&=
+\omega_y\cos\phi - \omega_z\sin\phi \\
+
+\dot{\psi}
+&=
+\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\sec\theta \\
+
+\dot{\phi}
+&=
+\omega_x
++
+\left(\omega_y\sin\phi 
++ \omega_z\cos\phi\right)\tan\theta
+
+\end{aligned}
+$$
+
+Thereby, the matrix to map angular velocity to body frame is:
 
 $$
 \boxed{
