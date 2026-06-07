@@ -1,9 +1,18 @@
-# Madgwick filter
-# Will use quaternions and gradient descent
-# May use Kalman Filter later
+""" 
+We will have to build helper functions for quaternions, gradient descent, Jacobian matrix, etc
+"""
 
-# Use Complementary filter for the baseline
 
-def complementary_filter(gyroscope_data, accelerometer_data):
-    return None
+"""
+The Madgwick filter fuses accelerometer, gyroscope and magnetometer to estimate
+orientation as a quaternion
+"""
+class MadgwickFilter:
+    def __init__(self):
+        self.quaternion = 0
+
+    def update(self):
+        return self.quaternion
+
+    
 
