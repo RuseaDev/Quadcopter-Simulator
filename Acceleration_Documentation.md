@@ -1,11 +1,13 @@
 ## Velocity Function
 
 We have:
+
 $$
 \mathbf{F}_{total} = \mathbf{F}_{gravity\_world} + \mathbf{F}_{thrust\_world}
 $$
 
 And: 
+
 $$
 \begin{aligned}
 &\mathbf{F}_{total} = m \mathbf{a}\\
