@@ -31,12 +31,9 @@ $$
 # Angular Velocity in Body Frame
 
 $$
-\boldsymbol{\omega}
-=
-\boldsymbol{\omega}_\phi
-+
-\boldsymbol{\omega}_\theta
-+
+\boldsymbol{\omega} =
+\boldsymbol{\omega}_\phi +
+\boldsymbol{\omega}_\theta +
 \boldsymbol{\omega}_\psi
 $$
 
