@@ -3,7 +3,7 @@
 We have:
 
 $$
-\mathbf{F}_{total} = \mathbf{F}_{gravity world} + \mathbf{F}_{thrust\_world}
+\mathbf{F}_{total} = \mathbf{F}_{\text{gravity world}} + \mathbf{F}_{\text{thrust world}}
 $$
 
 And: 
@@ -11,23 +11,23 @@ And:
 $$
 \begin{aligned}
 &\mathbf{F}_{total} = m \mathbf{a}\\
-&\mathbf{F}_{gravity\_world} = m \mathbf{g}
+&\mathbf{F}_{\text{gravity world}} = m \mathbf{g}
 \end{aligned}
 $$
 
 Hence, the function becomes:
 
 $$
-m \mathbf{a} = m \mathbf{g} + \mathbf{F}_{thrust world}
+m \mathbf{a} = m \mathbf{g} + \mathbf{F}_{\text{thrust world}}
 $$
 
 $$
-\mathbf{a} = \frac{(\mathbf{F}_{thrust\_word})}{m} + \mathbf{g}
+\mathbf{a} = \frac{(\mathbf{F}_{\text{thrust word}})}{m} + \mathbf{g}
 $$
 
 $$
 \boxed{
-\dot{v} = \frac{(\mathbf{F}_{thrust\_word})}{m} + \mathbf{g}
+\dot{v} = \frac{(\mathbf{F}_{\text{thrust word}})}{m} + \mathbf{g}
 }
 $$
 
