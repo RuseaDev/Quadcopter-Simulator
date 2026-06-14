@@ -138,6 +138,7 @@ $$
 
 ## Pitch Angular Rate : $\boldsymbol{\omega}_{\theta,b}$
 
+
 $$
 \boldsymbol{\omega}_{\theta,b} = 
 T_1(\phi)
