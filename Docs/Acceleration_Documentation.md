@@ -1,20 +1,22 @@
 ## Velocity Function
 
 We have:
+
 $$
 \mathbf{F}_{total} = \mathbf{F}_{gravity\_world} + \mathbf{F}_{thrust\_world}
 $$
 
 And: 
+
 $$
 \begin{aligned}
 &\mathbf{F}_{total} = m \mathbf{a}\\
-
 &\mathbf{F}_{gravity\_world} = m \mathbf{g}
 \end{aligned}
 $$
 
 Hence, the function becomes:
+
 $$
 m \mathbf{a} = m \mathbf{g} + \mathbf{F}_{thrust\_world}
 $$
@@ -32,9 +34,9 @@ $$
 ## Mapped from Body Frame
 
 ### Rotational Matrices
+
 $$
-T_3(\psi)
-=
+T_3(\psi) =
 \begin{bmatrix}
 \cos\psi & \sin\psi & 0 \\
 -\sin\psi & \cos\psi & 0 \\
@@ -43,8 +45,7 @@ T_3(\psi)
 $$
 
 $$
-T_2(\theta)
-=
+T_2(\theta) =
 \begin{bmatrix}
 \cos\theta & 0 & -\sin\theta \\
 0 & 1 & 0 \\
@@ -52,10 +53,8 @@ T_2(\theta)
 \end{bmatrix},
 $$
 
-
 $$
-T_1(\phi)
-=
+T_1(\phi) =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & \cos\phi & \sin\phi \\
@@ -66,16 +65,14 @@ $$
 ### Body to World Matrix
 $$
 \boxed{
-\boldsymbol {R}_{b2w}
-= 
+\boldsymbol {R}_{b2w} = 
 T_3(\psi)T_2(\theta)T_1(\phi)}
 $$
 
 ### Velocity Equation 
 $$
 \boxed{
-\dot{v}
-= 
+\dot{v} = 
 \frac{1}{m} (\boldsymbol{R}_{b2w} \mathbf{F}_{thrust\_body}) + \mathbf{g}
 }
 $$
