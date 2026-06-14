@@ -35,13 +35,15 @@ $$
 
 ### Rotational Matrices
 
-$$T_3(\psi)
+$$T_3(\psi)$$
 =
+$$
 \begin{bmatrix}
 \cos\psi & \sin\psi & 0 \\
 -\sin\psi & \cos\psi & 0 \\
 0 & 0 & 1
-\end{bmatrix},$$
+\end{bmatrix},
+$$
 
 $$
 T_2(\theta)
