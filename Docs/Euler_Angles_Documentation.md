@@ -1,8 +1,7 @@
 # Rotational Matrices
 
 $$
-T_3(\psi)
-=
+T_3(\psi) =
 \begin{bmatrix}
 \cos\psi & \sin\psi & 0 \\
 -\sin\psi & \cos\psi & 0 \\
@@ -11,8 +10,7 @@ T_3(\psi)
 $$
 
 $$
-T_2(\theta)
-=
+T_2(\theta) =
 \begin{bmatrix}
 \cos\theta & 0 & -\sin\theta \\
 0 & 1 & 0 \\
@@ -22,8 +20,7 @@ $$
 
 
 $$
-T_1(\phi)
-=
+T_1(\phi) =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & \cos\phi & \sin\phi \\
@@ -34,12 +31,9 @@ $$
 # Angular Velocity in Body Frame
 
 $$
-\boldsymbol{\omega}
-=
-\boldsymbol{\omega}_\phi
-+
-\boldsymbol{\omega}_\theta
-+
+\boldsymbol{\omega} =
+\boldsymbol{\omega}_\phi +
+\boldsymbol{\omega}_\theta +
 \boldsymbol{\omega}_\psi
 $$
 
@@ -48,38 +42,30 @@ $$
 - $\dot{\psi}$ : angular velocity of the inertial $Z$ axis
 
 Angular Velocity in Body Frame:
+
 $$
-\boldsymbol{\omega}_b
-
-= 
-
-\boldsymbol{\omega}_{\psi,b}
-+ 
-\boldsymbol{\omega}_{\theta,b}
-+ 
+\boldsymbol{\omega}_{b} = 
+\boldsymbol{\omega}_{\psi,b} + 
+\boldsymbol{\omega}_{\theta,b} + 
 \boldsymbol{\omega}_{\phi, b}
-
 $$
 
-Mapped using Rotationla Matrices:
+Mapped using Rotational Matrices:
 
 $$
-\boldsymbol{\omega}_b
-=
+\boldsymbol{\omega}_{b} =
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-+
+\end{bmatrix} +
 T_1(\phi)
 \begin{bmatrix}
 0 \\
 \dot{\theta} \\
 0
-\end{bmatrix}
-+
+\end{bmatrix} +
 \begin{bmatrix}
 \dot{\phi} \\
 0 \\
@@ -89,14 +75,15 @@ $$
 
 ## Yar Angular Rate : $\boldsymbol{\omega}_{\psi,b}$
 
+We have: 
+
 $$
 T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 c_\theta & 0 & -s_\theta \\
 0 & 1 & 0 \\
@@ -106,10 +93,7 @@ s_\theta & 0 & c_\theta
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-
-=
-
+\end{bmatrix} =
 \begin{bmatrix}
 -\dot{\psi}s_\theta \\
 0 \\
@@ -118,26 +102,19 @@ s_\theta & 0 & c_\theta
 $$
 
 $$
-\boldsymbol{\omega}_{\psi,b} 
-
-= 
-
+\boldsymbol{\omega}_{\psi,b} = 
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-
-=
-
+\end{bmatrix} =
 T_1(\phi)
 \begin{bmatrix}
 -\dot{\psi}s_\theta \\
 0 \\
 \dot{\psi}c_\theta
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & c_\phi & s_\phi \\
@@ -151,8 +128,7 @@ T_1(\phi)
 $$
 
 $$
-\boldsymbol{\omega}_{\psi,b}
-=
+\boldsymbol{\omega}_{\psi,b} =
 \begin{bmatrix}
 -\dot{\psi}\sin\theta \\
 \dot{\psi}\cos\theta\sin\phi \\
@@ -162,18 +138,15 @@ $$
 
 ## Pitch Angular Rate : $\boldsymbol{\omega}_{\theta,b}$
 
+
 $$
-\boldsymbol{\omega}_{\theta,b}
-
-= 
-
+\boldsymbol{\omega}_{\theta,b} = 
 T_1(\phi)
 \begin{bmatrix}
 0 \\
 \dot{\theta} \\
 0
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & c_\phi & s_\phi \\
@@ -187,8 +160,7 @@ T_1(\phi)
 $$
 
 $$
-\boldsymbol{\omega}_{\theta,b}
-=
+\boldsymbol{\omega}_{\theta,b} =
 \begin{bmatrix}
 0 \\
 \dot{\theta}\cos\phi \\
@@ -196,47 +168,44 @@ $$
 \end{bmatrix}
 $$
 
+
 ## Roll Angular Rate : $\boldsymbol{\omega}_{\phi,b}$
+
+
 $$
-\boldsymbol{\omega}_{\psi,b}
-
-= 
-
+\boldsymbol{\omega}_{\phi,b} = 
 \begin{bmatrix}
-\dot{\psi}\\
+\dot{\phi}\\
 0\\
 0
 \end{bmatrix}
 $$
 
+
 ## Angular Velocity : 
+
+
 $$ 
-\boldsymbol{\omega}_{b} 
-= 
+\boldsymbol{\omega}_{b} = 
+\boldsymbol{\omega}_{\psi,b}  +
+\boldsymbol{\omega}_{\theta,b}  +
 \boldsymbol{\omega}_{\phi,b} 
-+
-\boldsymbol{\omega}_{\theta,b} 
-+
-\boldsymbol{\omega}_{\psi,b} 
 $$
 
 $$
-\boldsymbol{\omega}_{b} 
-= 
+\boldsymbol{\omega}_{b}  = 
 \begin{bmatrix}
 -\dot{\psi}\sin\theta \\
 \dot{\psi}\cos\theta\sin\phi \\
 \dot{\psi}\cos\theta\cos\phi
-\end{bmatrix}
-+
+\end{bmatrix} +
 \begin{bmatrix}
 0 \\
 \dot{\theta}\cos\phi \\
 -\dot{\theta}\sin\phi
-\end{bmatrix}
-+
+\end{bmatrix} +
 \begin{bmatrix}
-\dot{\psi}\\
+\dot{\phi}\\
 0\\
 0
 \end{bmatrix}
@@ -260,39 +229,31 @@ $$
 }
 $$
 
-## Solve for $ {\dot{\theta}} $
+## Solve for ${\dot{\theta}}$
 
 Multiply the $\omega_y$ with $\cos\phi$:
 
 $$
-\omega_y\cos\phi
-=
-\dot{\theta}\cos^2\phi
-+
-\dot{\psi}\cos\theta\sin\phi\cos\phi.
+\omega_y\cos\phi =
+\dot{\theta}\cos^2\phi +
+\dot{\psi}\cos\theta\sin\phi\cos\phi
 $$
 
 Multiply the $\omega_z$ with $-\sin\phi$:
 
 $$
--\omega_z\sin\phi
-=
-\dot{\theta}\sin^2\phi
--
-\dot{\psi}\cos\theta\cos\phi\sin\phi.
+-\omega_z\sin\phi =
+\dot{\theta}\sin^2\phi -
+\dot{\psi}\cos\theta\cos\phi\sin\phi
 $$
 
 Add two equations, we have:
 
 $$
-\omega_y\cos\phi - \omega_z\sin\phi
-=
-\dot{\theta}\cos^2\phi
-+
-\dot{\theta}\sin^2\phi 
-+
-(\dot{\psi}\cos\theta\sin\phi\cos\phi
--
+\omega_y\cos\phi - \omega_z\sin\phi =
+\dot{\theta}\cos^2\phi +
+\dot{\theta}\sin^2\phi +
+(\dot{\psi}\cos\theta\sin\phi\cos\phi -
 \dot{\psi}\cos\theta\cos\phi\sin\phi)
 $$
 
@@ -310,78 +271,65 @@ Hence,
 
 $$
 \boxed{
-\dot{\theta}
-=
+\dot{\theta} =
 \omega_y\cos\phi - \omega_z\sin\phi
 }
 $$
 
-## Solve for : $ \dot{\psi} $
+## Solve for : $\dot{\psi}$
 
 Multiply the $\omega_y$ with $\sin\phi$:
 
 $$
-\omega_y\sin\phi
-=
-\dot{\theta}\cos\phi\sin\phi
-+
-\dot{\psi}\cos\theta\sin^2\phi.
+\omega_y\sin\phi =
+\dot{\theta}\cos\phi\sin\phi +
+\dot{\psi}\cos\theta\sin^2\phi
 $$
 
 Multiply the $\omega_z$ with $\cos\phi$:
 
 $$
-\omega_z\cos\phi
-=
--\dot{\theta}\sin\phi\cos\phi
-+
-\dot{\psi}\cos\theta\cos^2\phi.
+\omega_z\cos\phi =
+-\dot{\theta}\sin\phi\cos\phi +
+\dot{\psi}\cos\theta\cos^2\phi
 $$
 
 Add 2 equations:
 
 $$
-\omega_y\sin\phi + \omega_z\cos\phi
-=
-(\dot{\theta}\cos\phi\sin\phi
--
-\dot{\theta}\sin\phi\cos\phi)
-+
-\dot{\psi}\cos\theta\sin^2\phi
-+
-\dot{\psi}\cos\theta\cos^2\phi.
+\omega_y\sin\phi + \omega_z\cos\phi =
+(\dot{\theta}\cos\phi\sin\phi -
+\dot{\theta}\sin\phi\cos\phi) +
+\dot{\psi}\cos\theta\sin^2\phi +
+\dot{\psi}\cos\theta\cos^2\phi
 $$
 
 $$
-\omega_y\sin\phi + \omega_z\cos\phi
-=
+\omega_y\sin\phi + \omega_z\cos\phi =
 \dot{\psi}\cos\theta
 \left(\sin^2\phi + \cos^2\phi\right)
 $$
 
 $$
-\omega_y\sin\phi + \omega_z\cos\phi
-=
+\omega_y\sin\phi + \omega_z\cos\phi =
 \dot{\psi}\cos\theta.
 $$
 
 Assume $\cos\theta \neq 0$, divide function with $\cos\theta$:
 
 $$
-\dot{\psi}
-=
+\dot{\psi} =
 \frac{\omega_y\sin\phi + \omega_z\cos\phi}{\cos\theta}
 $$
 
 $$
 \boxed{
-\dot{\psi}
-=
+\dot{\psi} =
 \left(\omega_y\sin\phi + \omega_z\cos\phi\right)\sec\theta
 }
 $$
 
-## Solve for $ \dot{\phi} $ 
+## Solve for $\dot{\phi}$ 
 
 We have:
 
@@ -392,20 +340,16 @@ $$
 add $\dot{\psi}\sin\theta$ to both sides:
 
 $$
-\dot{\phi}
-=
+\dot{\phi} =
 \omega_x + \dot{\psi}\sin\theta.
 $$
 
 Substitute $\dot{\psi} = \omega_y\sin\phi + \omega_z\cos\phi$ to the equation:
 
 $$
-\dot{\phi}
-=
-\omega_x
-+
-\left(\omega_y\sin\phi 
-+ 
+\dot{\phi} =
+\omega_x +
+\left(\omega_y\sin\phi  + 
 \omega_z\cos\phi\right)
 \sec\theta\sin\theta
 $$
@@ -413,10 +357,8 @@ $$
 Because:
 
 $$
-\sec\theta\sin\theta
-=
-\frac{1}{\cos\theta}\sin\theta
-=
+\sec\theta\sin\theta =
+\frac{1}{\cos\theta}\sin\theta =
 \tan\theta.
 $$
 
@@ -424,35 +366,26 @@ The equation becomes:
 
 $$
 \boxed{
-\dot{\phi}
-=
-\omega_x
-+
-\left(\omega_y\sin\phi 
-+ \omega_z\cos\phi\right)\tan\theta
+\dot{\phi}=
+\omega_x +
+\left(\omega_y\sin\phi + 
+\omega_z\cos\phi\right)\tan\theta
 }
 $$
 
 ## Mapping Rotational Matrix
 
 We have: 
+
 $$
 \begin{aligned}
-\dot{\theta}
-&=
+\dot{\phi} &=
+\omega_x +
+\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\tan\theta \\
+\dot{\theta} &=
 \omega_y\cos\phi - \omega_z\sin\phi \\
-
-\dot{\psi}
-&=
-\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\sec\theta \\
-
-\dot{\phi}
-&=
-\omega_x
-+
-\left(\omega_y\sin\phi 
-+ \omega_z\cos\phi\right)\tan\theta
-
+\dot{\psi} &=
+\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\sec\theta
 \end{aligned}
 $$
 
@@ -464,8 +397,7 @@ $$
 \dot{\phi} \\
 \dot{\theta} \\
 \dot{\psi}
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & \sin\phi\tan\theta & \cos\phi\tan\theta \\
 0 & \cos\phi & -\sin\phi \\
