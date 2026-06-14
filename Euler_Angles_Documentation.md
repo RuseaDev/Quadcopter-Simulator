@@ -44,8 +44,6 @@ $$
 Angular Velocity in Body Frame:
 
 $$
-\boldsymbol{\omega}_{b} = 
-
 \boldsymbol{\omega}_{\psi,b} + 
 \boldsymbol{\omega}_{\theta,b} + 
 \boldsymbol{\omega}_{\phi, b}
@@ -55,18 +53,21 @@ Mapped using Rotationla Matrices:
 
 $$
 \boldsymbol{\omega}_b =
+
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
 \dot{\psi}
 \end{bmatrix} +
+
 T_1(\phi)
 \begin{bmatrix}
 0 \\
 \dot{\theta} \\
 0
 \end{bmatrix} +
+
 \begin{bmatrix}
 \dot{\phi} \\
 0 \\
