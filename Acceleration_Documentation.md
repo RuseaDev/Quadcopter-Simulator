@@ -35,6 +35,7 @@ $$
 
 ### Rotational Matrices
 
+
 $$
 T_3(\psi)
 =
