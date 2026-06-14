@@ -205,7 +205,7 @@ $$
 -\dot{\theta}\sin\phi
 \end{bmatrix} +
 \begin{bmatrix}
-\dot{\psi}\\
+\dot{\phi}\\
 0\\
 0
 \end{bmatrix}
