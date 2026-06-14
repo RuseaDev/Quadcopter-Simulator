@@ -329,7 +329,7 @@ $$
 }
 $$
 
-## Solve for $ \dot{\phi} $ 
+## Solve for $\dot{\phi}$ 
 
 We have:
 
