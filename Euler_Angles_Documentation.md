@@ -181,14 +181,14 @@ $$
 \end{bmatrix}
 $$
 
+
 ## Angular Velocity : 
+
+
 $$ 
-\boldsymbol{\omega}_{b} 
-= 
-\boldsymbol{\omega}_{\phi,b} 
-+
-\boldsymbol{\omega}_{\theta,b} 
-+
+\boldsymbol{\omega}_{b} = 
+\boldsymbol{\omega}_{\phi,b}  +
+\boldsymbol{\omega}_{\theta,b}  +
 \boldsymbol{\omega}_{\psi,b} 
 $$
 
