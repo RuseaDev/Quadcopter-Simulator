@@ -236,30 +236,24 @@ Multiply the $\omega_y$ with $\cos\phi$:
 $$
 \omega_y\cos\phi =
 \dot{\theta}\cos^2\phi +
-\dot{\psi}\cos\theta\sin\phi\cos\phi.
+\dot{\psi}\cos\theta\sin\phi\cos\phi
 $$
 
 Multiply the $\omega_z$ with $-\sin\phi$:
 
 $$
--\omega_z\sin\phi
-=
-\dot{\theta}\sin^2\phi
--
-\dot{\psi}\cos\theta\cos\phi\sin\phi.
+-\omega_z\sin\phi =
+\dot{\theta}\sin^2\phi -
+\dot{\psi}\cos\theta\cos\phi\sin\phi
 $$
 
 Add two equations, we have:
 
 $$
-\omega_y\cos\phi - \omega_z\sin\phi
-=
-\dot{\theta}\cos^2\phi
-+
-\dot{\theta}\sin^2\phi 
-+
-(\dot{\psi}\cos\theta\sin\phi\cos\phi
--
+\omega_y\cos\phi - \omega_z\sin\phi =
+\dot{\theta}\cos^2\phi +
+\dot{\theta}\sin^2\phi +
+(\dot{\psi}\cos\theta\sin\phi\cos\phi -
 \dot{\psi}\cos\theta\cos\phi\sin\phi)
 $$
 
@@ -277,8 +271,7 @@ Hence,
 
 $$
 \boxed{
-\dot{\theta}
-=
+\dot{\theta} =
 \omega_y\cos\phi - \omega_z\sin\phi
 }
 $$
@@ -288,62 +281,50 @@ $$
 Multiply the $\omega_y$ with $\sin\phi$:
 
 $$
-\omega_y\sin\phi
-=
-\dot{\theta}\cos\phi\sin\phi
-+
-\dot{\psi}\cos\theta\sin^2\phi.
+\omega_y\sin\phi =
+\dot{\theta}\cos\phi\sin\phi +
+\dot{\psi}\cos\theta\sin^2\phi
 $$
 
 Multiply the $\omega_z$ with $\cos\phi$:
 
 $$
-\omega_z\cos\phi
-=
--\dot{\theta}\sin\phi\cos\phi
-+
-\dot{\psi}\cos\theta\cos^2\phi.
+\omega_z\cos\phi =
+-\dot{\theta}\sin\phi\cos\phi +
+\dot{\psi}\cos\theta\cos^2\phi
 $$
 
 Add 2 equations:
 
 $$
-\omega_y\sin\phi + \omega_z\cos\phi
-=
-(\dot{\theta}\cos\phi\sin\phi
--
-\dot{\theta}\sin\phi\cos\phi)
-+
-\dot{\psi}\cos\theta\sin^2\phi
-+
-\dot{\psi}\cos\theta\cos^2\phi.
+\omega_y\sin\phi + \omega_z\cos\phi =
+(\dot{\theta}\cos\phi\sin\phi -
+\dot{\theta}\sin\phi\cos\phi) +
+\dot{\psi}\cos\theta\sin^2\phi +
+\dot{\psi}\cos\theta\cos^2\phi
 $$
 
 $$
-\omega_y\sin\phi + \omega_z\cos\phi
-=
+\omega_y\sin\phi + \omega_z\cos\phi =
 \dot{\psi}\cos\theta
 \left(\sin^2\phi + \cos^2\phi\right)
 $$
 
 $$
-\omega_y\sin\phi + \omega_z\cos\phi
-=
+\omega_y\sin\phi + \omega_z\cos\phi =
 \dot{\psi}\cos\theta.
 $$
 
 Assume $\cos\theta \neq 0$, divide function with $\cos\theta$:
 
 $$
-\dot{\psi}
-=
+\dot{\psi} =
 \frac{\omega_y\sin\phi + \omega_z\cos\phi}{\cos\theta}
 $$
 
 $$
 \boxed{
-\dot{\psi}
-=
+\dot{\psi} =
 \left(\omega_y\sin\phi + \omega_z\cos\phi\right)\sec\theta
 }
 $$
@@ -359,20 +340,16 @@ $$
 add $\dot{\psi}\sin\theta$ to both sides:
 
 $$
-\dot{\phi}
-=
+\dot{\phi} =
 \omega_x + \dot{\psi}\sin\theta.
 $$
 
 Substitute $\dot{\psi} = \omega_y\sin\phi + \omega_z\cos\phi$ to the equation:
 
 $$
-\dot{\phi}
-=
-\omega_x
-+
-\left(\omega_y\sin\phi 
-+ 
+\dot{\phi} =
+\omega_x +
+\left(\omega_y\sin\phi  + 
 \omega_z\cos\phi\right)
 \sec\theta\sin\theta
 $$
@@ -380,10 +357,8 @@ $$
 Because:
 
 $$
-\sec\theta\sin\theta
-=
-\frac{1}{\cos\theta}\sin\theta
-=
+\sec\theta\sin\theta =
+\frac{1}{\cos\theta}\sin\theta =
 \tan\theta.
 $$
 
@@ -391,12 +366,10 @@ The equation becomes:
 
 $$
 \boxed{
-\dot{\phi}
-=
-\omega_x
-+
-\left(\omega_y\sin\phi 
-+ \omega_z\cos\phi\right)\tan\theta
+\dot{\phi}=
+\omega_x +
+\left(\omega_y\sin\phi + 
+\omega_z\cos\phi\right)\tan\theta
 }
 $$
 
