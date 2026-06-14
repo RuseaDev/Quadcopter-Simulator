@@ -43,14 +43,10 @@ $$
 
 Angular Velocity in Body Frame:
 $$
-\boldsymbol{\omega}_b
+\boldsymbol{\omega}_b = 
 
-= 
-
-\boldsymbol{\omega}_{\psi,b}
-+ 
-\boldsymbol{\omega}_{\theta,b}
-+ 
+\boldsymbol{\omega}_{\psi,b} + 
+\boldsymbol{\omega}_{\theta,b} + 
 \boldsymbol{\omega}_{\phi, b}
 
 $$
