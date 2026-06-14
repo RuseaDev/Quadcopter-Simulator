@@ -397,8 +397,7 @@ $$
 \dot{\phi} \\
 \dot{\theta} \\
 \dot{\psi}
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & \sin\phi\tan\theta & \cos\phi\tan\theta \\
 0 & \cos\phi & -\sin\phi \\
