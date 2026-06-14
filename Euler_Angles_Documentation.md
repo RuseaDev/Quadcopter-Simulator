@@ -60,14 +60,12 @@ T_1(\phi)T_2(\theta)
 0 \\
 \dot{\psi}
 \end{bmatrix} +
-
 T_1(\phi)
 \begin{bmatrix}
 0 \\
 \dot{\theta} \\
 0
 \end{bmatrix} +
-
 \begin{bmatrix}
 \dot{\phi} \\
 0 \\
