@@ -50,10 +50,10 @@ $$
 \boldsymbol{\omega}_{\phi, b}
 $$
 
-Mapped using Rotationla Matrices:
+Mapped using Rotational Matrices:
 
 $$
-\boldsymbol{\omega}_b =
+\boldsymbol{\omega}_{b} =
 
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
