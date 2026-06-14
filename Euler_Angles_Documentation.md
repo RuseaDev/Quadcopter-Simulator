@@ -1,8 +1,7 @@
 # Rotational Matrices
 
 $$
-T_3(\psi)
-=
+T_3(\psi) =
 \begin{bmatrix}
 \cos\psi & \sin\psi & 0 \\
 -\sin\psi & \cos\psi & 0 \\
@@ -11,8 +10,7 @@ T_3(\psi)
 $$
 
 $$
-T_2(\theta)
-=
+T_2(\theta) =
 \begin{bmatrix}
 \cos\theta & 0 & -\sin\theta \\
 0 & 1 & 0 \\
@@ -22,8 +20,7 @@ $$
 
 
 $$
-T_1(\phi)
-=
+T_1(\phi) =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & \cos\phi & \sin\phi \\
@@ -64,22 +61,19 @@ $$
 Mapped using Rotationla Matrices:
 
 $$
-\boldsymbol{\omega}_b
-=
+\boldsymbol{\omega}_b =
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-+
+\end{bmatrix} +
 T_1(\phi)
 \begin{bmatrix}
 0 \\
 \dot{\theta} \\
 0
-\end{bmatrix}
-+
+\end{bmatrix} +
 \begin{bmatrix}
 \dot{\phi} \\
 0 \\
@@ -106,10 +100,7 @@ s_\theta & 0 & c_\theta
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-
-=
-
+\end{bmatrix} =
 \begin{bmatrix}
 -\dot{\psi}s_\theta \\
 0 \\
@@ -118,26 +109,19 @@ s_\theta & 0 & c_\theta
 $$
 
 $$
-\boldsymbol{\omega}_{\psi,b} 
-
-= 
-
+\boldsymbol{\omega}_{\psi,b} = 
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-
-=
-
+\end{bmatrix} =
 T_1(\phi)
 \begin{bmatrix}
 -\dot{\psi}s_\theta \\
 0 \\
 \dot{\psi}c_\theta
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & c_\phi & s_\phi \\
@@ -151,8 +135,7 @@ T_1(\phi)
 $$
 
 $$
-\boldsymbol{\omega}_{\psi,b}
-=
+\boldsymbol{\omega}_{\psi,b} =
 \begin{bmatrix}
 -\dot{\psi}\sin\theta \\
 \dot{\psi}\cos\theta\sin\phi \\
