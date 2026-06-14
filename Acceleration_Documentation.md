@@ -15,6 +15,7 @@ $$
 $$
 
 Hence, the function becomes:
+
 $$
 m \mathbf{a} = m \mathbf{g} + \mathbf{F}_{thrust\_world}
 $$
