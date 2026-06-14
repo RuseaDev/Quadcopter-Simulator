@@ -173,9 +173,9 @@ $$
 
 
 $$
-\boldsymbol{\omega}_{\psi,b} = 
+\boldsymbol{\omega}_{\phi,b} = 
 \begin{bmatrix}
-\dot{\psi}\\
+\dot{\phi}\\
 0\\
 0
 \end{bmatrix}
@@ -187,9 +187,9 @@ $$
 
 $$ 
 \boldsymbol{\omega}_{b} = 
-\boldsymbol{\omega}_{\phi,b}  +
+\boldsymbol{\omega}_{\psi,b}  +
 \boldsymbol{\omega}_{\theta,b}  +
-\boldsymbol{\omega}_{\psi,b} 
+\boldsymbol{\omega}_{\phi,b} 
 $$
 
 $$
