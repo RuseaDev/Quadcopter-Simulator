@@ -376,6 +376,7 @@ $$
 ## Mapping Rotational Matrix
 
 We have: 
+
 $$
 \begin{aligned}
 \dot{\theta}
