@@ -194,13 +194,11 @@ $$
 
 $$
 \boldsymbol{\omega}_{b}  = 
-
 \begin{bmatrix}
 -\dot{\psi}\sin\theta \\
 \dot{\psi}\cos\theta\sin\phi \\
 \dot{\psi}\cos\theta\cos\phi
 \end{bmatrix} +
-
 \begin{bmatrix}
 0 \\
 \dot{\theta}\cos\phi \\
