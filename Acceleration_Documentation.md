@@ -11,7 +11,6 @@ And:
 $$
 \begin{aligned}
 &\mathbf{F}_{total} = m \mathbf{a}\\
-
 &\mathbf{F}_{gravity\_world} = m \mathbf{g}
 \end{aligned}
 $$
