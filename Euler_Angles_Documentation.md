@@ -168,6 +168,7 @@ $$
 \end{bmatrix}
 $$
 
+
 ## Roll Angular Rate : $\boldsymbol{\omega}_{\phi,b}$
 
 
