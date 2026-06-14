@@ -234,10 +234,8 @@ $$
 Multiply the $\omega_y$ with $\cos\phi$:
 
 $$
-\omega_y\cos\phi
-=
-\dot{\theta}\cos^2\phi
-+
+\omega_y\cos\phi =
+\dot{\theta}\cos^2\phi +
 \dot{\psi}\cos\theta\sin\phi\cos\phi.
 $$
 
