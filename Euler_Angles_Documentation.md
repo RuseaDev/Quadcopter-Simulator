@@ -76,7 +76,8 @@ $$
 ## Yar Angular Rate : $\boldsymbol{\omega}_{\psi,b}$
 
 $$
-T_2(\theta) = 
+\boldsymbol{\omega}_{\psi,b} =
+T_2(\theta)
 \begin{bmatrix}
 0 \\
 0 \\
