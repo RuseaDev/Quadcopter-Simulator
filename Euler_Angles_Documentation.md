@@ -82,8 +82,7 @@ T_2(\theta)
 0 \\
 0 \\
 \dot{\psi}
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 c_\theta & 0 & -s_\theta \\
 0 & 1 & 0 \\
