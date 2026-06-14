@@ -35,9 +35,8 @@ $$
 
 ### Rotational Matrices
 
-$$T_3(\psi)$$
-
 $$
+T_3(\psi)
 =
 \begin{bmatrix}
 \cos\psi & \sin\psi & 0 \\
