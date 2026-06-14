@@ -379,13 +379,13 @@ We have:
 
 $$
 \begin{aligned}
+\dot{\phi} &=
+\omega_x +
+\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\tan\theta
 \dot{\theta} &=
 \omega_y\cos\phi - \omega_z\sin\phi \\
 \dot{\psi} &=
 \left(\omega_y\sin\phi + \omega_z\cos\phi\right)\sec\theta \\
-\dot{\phi} &=
-\omega_x +
-\left(\omega_y\sin\phi + \omega_z\cos\phi\right)\tan\theta
 \end{aligned}
 $$
 
