@@ -6,7 +6,7 @@ T_3(\psi) =
 \cos\psi & \sin\psi & 0 \\
 -\sin\psi & \cos\psi & 0 \\
 0 & 0 & 1
-\end{bmatrix},
+\end{bmatrix}
 $$
 
 $$
@@ -15,7 +15,7 @@ T_2(\theta) =
 \cos\theta & 0 & -\sin\theta \\
 0 & 1 & 0 \\
 \sin\theta & 0 & \cos\theta
-\end{bmatrix},
+\end{bmatrix}
 $$
 
 
