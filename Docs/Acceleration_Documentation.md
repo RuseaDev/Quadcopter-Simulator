@@ -73,6 +73,6 @@ $$
 $$
 \boxed{
 \dot{v} = 
-\frac{1}{m} (\boldsymbol{R}_{b2w} \mathbf{F}_{\text{thrust_body}}) + \mathbf{g}
+\frac{1}{m} (\boldsymbol{R}_{b2w} \mathbf{F}_\text{thrust_body}) + \mathbf{g}
 }
 $$
