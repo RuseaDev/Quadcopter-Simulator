@@ -160,8 +160,7 @@ T_1(\phi)
 $$
 
 $$
-\boldsymbol{\omega}_{\theta,b}
-=
+\boldsymbol{\omega}_{\theta,b} =
 \begin{bmatrix}
 0 \\
 \dot{\theta}\cos\phi \\
@@ -170,11 +169,10 @@ $$
 $$
 
 ## Roll Angular Rate : $\boldsymbol{\omega}_{\phi,b}$
+
+
 $$
-\boldsymbol{\omega}_{\psi,b}
-
-= 
-
+\boldsymbol{\omega}_{\psi,b} = 
 \begin{bmatrix}
 \dot{\psi}\\
 0\\
