@@ -139,17 +139,13 @@ $$
 ## Pitch Angular Rate : $\boldsymbol{\omega}_{\theta,b}$
 
 $$
-\boldsymbol{\omega}_{\theta,b}
-
-= 
-
+\boldsymbol{\omega}_{\theta,b} = 
 T_1(\phi)
 \begin{bmatrix}
 0 \\
 \dot{\theta} \\
 0
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & c_\phi & s_\phi \\
