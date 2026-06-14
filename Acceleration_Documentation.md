@@ -34,6 +34,7 @@ $$
 ## Mapped from Body Frame
 
 ### Rotational Matrices
+
 $$
 T_3(\psi)
 =
@@ -53,7 +54,6 @@ T_2(\theta)
 \sin\theta & 0 & \cos\theta
 \end{bmatrix},
 $$
-
 
 $$
 T_1(\phi)
