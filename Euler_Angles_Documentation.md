@@ -276,7 +276,7 @@ $$
 }
 $$
 
-## Solve for : $ \dot{\psi} $
+## Solve for : $\dot{\psi}$
 
 Multiply the $\omega_y$ with $\sin\phi$:
 
