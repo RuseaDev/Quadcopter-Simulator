@@ -42,12 +42,13 @@ $$
 - $\dot{\psi}$ : angular velocity of the inertial $Z$ axis
 
 Angular Velocity in Body Frame:
+
 $$
 \boldsymbol{\omega}_b = 
+
 \boldsymbol{\omega}_{\psi,b} + 
 \boldsymbol{\omega}_{\theta,b} + 
 \boldsymbol{\omega}_{\phi, b}
-
 $$
 
 Mapped using Rotationla Matrices:
