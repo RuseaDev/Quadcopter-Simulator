@@ -229,7 +229,7 @@ $$
 }
 $$
 
-## Solve for $ {\dot{\theta}} $
+## Solve for ${\dot{\theta}}$
 
 Multiply the $\omega_y$ with $\cos\phi$:
 
