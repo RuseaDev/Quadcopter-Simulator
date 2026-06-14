@@ -45,8 +45,7 @@ T_3(\psi) =
 $$
 
 $$
-T_2(\theta)
-=
+T_2(\theta) =
 \begin{bmatrix}
 \cos\theta & 0 & -\sin\theta \\
 0 & 1 & 0 \\
@@ -55,8 +54,7 @@ T_2(\theta)
 $$
 
 $$
-T_1(\phi)
-=
+T_1(\phi) =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & \cos\phi & \sin\phi \\
@@ -67,16 +65,14 @@ $$
 ### Body to World Matrix
 $$
 \boxed{
-\boldsymbol {R}_{b2w}
-= 
+\boldsymbol {R}_{b2w} = 
 T_3(\psi)T_2(\theta)T_1(\phi)}
 $$
 
 ### Velocity Equation 
 $$
 \boxed{
-\dot{v}
-= 
+\dot{v} = 
 \frac{1}{m} (\boldsymbol{R}_{b2w} \mathbf{F}_{thrust\_body}) + \mathbf{g}
 }
 $$
