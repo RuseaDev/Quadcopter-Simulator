@@ -54,7 +54,6 @@ Mapped using Rotational Matrices:
 
 $$
 \boldsymbol{\omega}_{b} =
-
 T_1(\phi)T_2(\theta)
 \begin{bmatrix}
 0 \\
