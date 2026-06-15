@@ -4,7 +4,9 @@ importlib.reload (plant)
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt 
+from matplotlib.backends.backend_pdf import PdfPages
 from plant import DroneConfig, DronePlant, RK4_step, b2w_rotatation, g
+from scipy.spatial.transform import Rotation as R
 
 def default_input(t, config):
     hover = config.mass * g
@@ -33,7 +35,6 @@ def default_input(t, config):
 
     elif 5.5 <= t < 9.0:
         thrust = 0.84 * hover
-
         if 5.5 <= t < 6.2:
             torques[1] = 0.004
         if 6.2 <= t < 6.9:
@@ -81,37 +82,42 @@ def simulate_trajectory (
 
 def plot_state (df: pd.DataFrame): 
     df = df.copy()
-    fig, axs = plt.subplots (2, 2, figsize = (8, 5))
+    fig, axs = plt.subplots (2, 2, figsize = (10, 10))
     axs[0, 0].plot (df['time'], df['x'], label = 'x') 
     axs[0, 0].plot (df['time'], df['y'], label = 'y') 
     axs[0, 0].plot (df['time'], -df['z'], label = 'height') 
-    axs[0, 0].set_ylabel ('Position')
+    axs[0, 0].set_title ('Position')
+    axs[0, 0].set_xticks (np.arange(0, df['time'].iloc[-1], 1))
 
     axs[0, 1].plot (df['time'], df['vx'], label = 'vx')
     axs[0, 1].plot (df['time'], df['vy'], label = 'vy')
     axs[0, 1].plot (df['time'], df['vz'], label = 'vz')
-    axs[0, 1].set_ylabel ('Velocity')
+    axs[0, 1].set_title ('Velocity')
+    axs[0, 1].set_xticks (np.arange(0, df['time'].iloc[-1], 1))
 
     axs[1, 0].plot (df['time'], df['phi'], label = 'phi')
     axs[1, 0].plot (df['time'], df['theta'], label = 'theta')
     axs[1, 0].plot (df['time'], df['psi'], label = 'psi')
-    axs[1, 0].set_ylabel ('Euler Angles')
+    axs[1, 0].set_title ('Euler Angles')
+    axs[1, 0].set_xticks (np.arange(0, df['time'].iloc[-1], 1))
 
     axs[1, 1].plot (df['time'], df['wx'], label = 'wx')
     axs[1, 1].plot (df['time'], df['wy'], label = 'wy')
     axs[1, 1].plot (df['time'], df['wz'], label = 'wz')
-    axs[1, 1].set_ylabel ('Angular Velocity')    
+    axs[1, 1].set_title ('Angular Velocity')    
+    axs[1, 1].set_xticks (np.arange(0, df['time'].iloc[-1], 1))
     
     for ax in axs.flatten(): 
         ax.legend()
         ax.grid (True)
     axs[1, 0].set_xlabel ('Time')
     axs[1, 1].set_xlabel ('Time')
+    fig.suptitle('Stat 2D Plot')
 
-    return fig, axs 
+    return fig, axs
 
 def plot_trajectory (df: pd.DataFrame): 
-    fig = plt.figure (figsize = (8, 8)) 
+    fig = plt.figure (figsize = (10, 10)) 
     ax = fig.add_subplot(projection = '3d') 
 
     ax.plot (df['x'], df['y'], -df['z'], alpha = 0.8)
@@ -133,12 +139,100 @@ def plot_trajectory (df: pd.DataFrame):
     ax.set_ylabel ('y')
     ax.set_zlabel ('height')
     ax.legend() 
+    fig.suptitle('3D State Plot')
 
     return fig, ax
 
-def plot_gimble_lock (): 
+def plot_gimbal_lock (): 
+    theta_l = np.linspace(np.deg2rad(70), np.deg2rad(89.90), 200)
+    theta_r = np.linspace(np.deg2rad(90.10), np.deg2rad(110), 200)
+    theta_rad = np.concatenate([theta_l, theta_r])
+    theta_deg = np.rad2deg(theta_rad)
+
+    phi_input_deg = 10.0
+    psi_input_deg = 20.0
+    phi_input_rad = np.deg2rad(phi_input_deg)
+    psi_input_rad = np.deg2rad(psi_input_deg)
+
+    wx = np.ones_like(theta_rad)
+    wy = 0.2 * np.ones_like(theta_rad)
+    wz = 0.5 * np.ones_like(theta_rad)
+
+    phi_dot = []
+    theta_dot = []
+    psi_dot = []
+
+    for theta, wx_i, wy_i, wz_i in zip(theta_rad, wx, wy, wz):
+        euler_angle_matrix = np.array([
+            [1, np.sin(phi_input_rad) * np.tan(theta), np.cos(phi_input_rad) * np.tan(theta)],
+            [0, np.cos(phi_input_rad), -np.sin(phi_input_rad)],
+            [0, np.sin(phi_input_rad) / np.cos(theta), np.cos(phi_input_rad) / np.cos(theta)],
+        ])
+
+        euler_dot = euler_angle_matrix @ np.array([wx_i, wy_i, wz_i])
+        phi_dot.append(euler_dot[0])
+        theta_dot.append(euler_dot[1])
+        psi_dot.append(euler_dot[2])
+
+    phi_dot = np.array(phi_dot)
+    theta_dot = np.array(theta_dot)
+    psi_dot = np.array(psi_dot)
+
+    cos_theta_inverse = np.abs(1 / np.cos(theta_rad))
+
+    phi_recover = []
+    theta_recover = []
+    psi_recover = []
+
+    for theta in theta_rad:
+        rotational_matrix = b2w_rotatation(phi_input_rad, theta, psi_input_rad)
+        convert = R.from_matrix(rotational_matrix)
+        phi_rec, theta_rec, psi_rec = convert.as_euler('ZYX')
+
+        phi_recover.append(phi_rec)
+        theta_recover.append(theta_rec)
+        psi_recover.append(psi_rec)
+
+    phi_recover = np.rad2deg(phi_recover)
+    theta_recover = np.rad2deg(theta_recover)
+    psi_recover = np.rad2deg(psi_recover)
+
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+
+    axs[0, 0].plot(theta_deg, cos_theta_inverse, label='1 / cos(theta)')
+    axs[0, 0].set_title('1 / cos (theta)')
+    axs[0, 0].legend()
+    axs[0, 0].grid(True)
+
+    axs[0, 1].plot(theta_deg, np.rad2deg(phi_dot), label='dphi')
+    axs[0, 1].plot(theta_deg, np.rad2deg(theta_dot), label='dtheta')
+    axs[0, 1].plot(theta_deg, np.rad2deg(psi_dot), label='dpsi')
+    axs[0, 1].set_ylabel('Euler rate (deg/s)')
+    axs[0, 1].set_title('Euler Angle Derivatives')
+    axs[0, 1].legend()
+    axs[0, 1].grid(True)
+
+    axs[1, 0].plot(theta_deg, np.full_like(theta_deg, psi_input_deg), label='input roll')
+    axs[1, 0].plot(theta_deg, theta_deg, label='input pitch')
+    axs[1, 0].plot(theta_deg, np.full_like(theta_deg, phi_input_deg), label='input yaw')
+    axs[1, 0].set_xlabel('Input  theta (deg)')
+    axs[1, 0].set_ylabel('Degree')
+    axs[1, 0].set_title('Input Euler Angles')
+    axs[1, 0].legend()
+    axs[1, 0].grid(True)
+
+    axs[1, 1].plot(theta_deg, phi_recover, label='recover roll')
+    axs[1, 1].plot(theta_deg, theta_recover, label='recover pitch')
+    axs[1, 1].plot(theta_deg, psi_recover, label='recover yaw')
+    axs[1, 1].set_xlabel('Input theta (deg)')
+    axs[1, 1].set_ylabel('Recover angle (deg)')
+    axs[1, 1].set_title('Recover Euler Angles from Rotation Matrix')
+    axs[1, 1].legend(loc = 'lower left')
+    axs[1, 1].grid(True)
     
-    return 
+    fig.suptitle('Gimbal Lock Problems')
+    fig.subplots_adjust(wspace=0.3)
+    return fig, axs
 
 def run(
     mass = 2.0,
@@ -159,9 +253,15 @@ def run(
         dt = dt, 
         input_func = default_input
     )
-    plot_state (df)
-    plot_trajectory(df)
-    plt.show()
 
+    fig_state, _ = plot_state(df)
+    fig_traj, _ = plot_trajectory(df)
+    fig_gimbal, _ = plot_gimbal_lock()
+
+    with PdfPages("visualizer_image.pdf") as pdf:
+        pdf.savefig(fig_state)
+        pdf.savefig(fig_traj)
+        pdf.savefig(fig_gimbal)
+    
 if __name__ == '__main__': 
     run()
