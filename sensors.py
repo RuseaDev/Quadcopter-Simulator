@@ -1,27 +1,32 @@
-# Need to learn what values accelerometers and gyroscopes give you 
-# Will implement stochastic models in the end
+"""
+6-axis IMU 
+Accelerometer + Gyroscope 
+ax, ay, az      wx, wy, wz
+"""
 
+g = 9.81 # gravitational acceleration 
 
-# What member variables would the accelerometer have?
 class Accelerometer:
     def __init__(self):
+        self.true = 0
+        self.bias = 0 # bias isn't constant and it doesn't update randomly. Does it acculumate forever?
+        self.noise = 0 # There are different kinds of noise
 
-    def true_value(self):
+    def read(self, Rb2w):
+        """
+        The accelerometer will return acceleration in its accelerometer frame
+        (same with drone body frame in this case because they are glued together)
 
-    def bias(self):
-    
-    def noise(self):
+        The accelerometer will 
 
-    def final_value(self):
+        """
 
-# What data members would the gyroscope have?
-class Gyroscope:
-    def __init__(self):
+        az = 
+        ax = 
 
-    def true_value(self):
+        
 
-    def bias(self):
-    
-    def noise(self):
+        # Rotation from body to world frame
+        return ax, ay, az
 
-    def final_value(self):
+

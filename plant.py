@@ -74,23 +74,32 @@ class DronePlant:
         self.euler_angles = state_vectors[6:9]
         self.angular_velocity = state_vectors[9:12]
 
-    # Return torques
-    # def motor_mixing(self):
-    #     # Torques and thrust will be written here
-    #     # How would I really write the torques here? 
-    #     # Should return omega?
-    #     length = self.config.length
-    #     kt = self.config.kt
-    #     kb = self.config.kb
-    #     perpendicular_length = length/np.sqrt(2)
+    def motor_mixing(self, omega):
 
-    #     tau_roll, tau_pitch, tau_yaw = self.torques
-    #     tau_roll = kt*(-perpendicular_length * omega_1 ** 2 - perpendicular_length * omega_2 ** 2 + perpendicular_length + omega_3 ** 2 + perpendicular_length + omega_4 ** 2)
-    #     tau_pitch = -perpendicular_length * omega_1 ** 2 + perpendicular_length * omega_2 ** 2 - perpendicular_length + omega_3 ** 2 + perpendicular_length + omega_4 ** 2
-    #     tau_yaw = kb( -omega_1**2 + omega_2 ** 2 - omega_3 ** 2 + omega_4 ** 2)
+        """
+        omega: [omega1, omega2, omega3, omega4] motor angular speeds (rad/s)
+        Returns: thrust (scalar), torques( mp.array[tau_roll, tau_pitch, tau_yaw])
+        """
 
-        # return tau_roll, tau_pitch, tau_yaw
-    
+        kt = self.config.kt
+        kb = self.config.kb
+        l = self.config.length / np.sqrt(2)
+
+        omega_1, omega_2, omega_3, omega_4 = omega
+
+        f1 = kt * omega_1 ** 2
+        f2 = kt * omega_2 ** 2
+        f3 = kt * omega_3 ** 2
+        f4 = kt * omega_4 ** 2
+
+        thrust = f1 + f2 + f3 + f4
+        
+        tau_roll = l * (f1 - f2 - f3 + f4)
+        tau_pitch = l * (f1 + f2 - f3 - f4)
+        tau_yaw = kb * (-omega_1**2 + omega_2**2 - omega_3**2 + omega_4**2)
+
+        return thrust, np.array([tau_roll, tau_pitch, tau_yaw])
+
     def state_derivatives(self, thrust, torques):
 
         m = self.config.mass # mass of the drone
@@ -147,6 +156,11 @@ dt = 0.01
 t = np.arange(0, 10, dt)
 
 print(t)
+# dt = 0.01
+
+# t = np.arange(0, 10, dt)
+
+# print(t)
 
 
 
