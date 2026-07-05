@@ -30,4 +30,6 @@ class MadgwickMARG:
 
         #estimated gyroscope bias (rad / s)
         self.gyro_bias = np.zeros (3, dtype = float)
-
+    
+    def quaternion_to_array (q):
+        e

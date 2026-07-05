@@ -39,4 +39,3 @@ class Quaternion:
     
     def display(self):
         print(f"w: {self.w}, x: {self.x}, y: {self.y}, z: {self.z}")
-        
