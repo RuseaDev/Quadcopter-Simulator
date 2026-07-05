@@ -23,8 +23,9 @@ class Quaternion:
     
     def normalize(self):
         length = np.sqrt(self.w**2 + self.x**2 + self.y**2 + self.z**2)
-        normalized_q = self.q/length
-        return normalized_q
+        if length == 0:
+            return Quaternion(self.w, self.x, self.y, self.z)
+        return Quaternion(self.w / length, self.x / length, self.y / length, self.z / length)
     
     @classmethod
     def from_axis_angle(cls, axis, angle):
