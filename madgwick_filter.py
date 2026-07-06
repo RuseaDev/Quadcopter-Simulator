@@ -9,7 +9,7 @@ class MadgwickMARG:
     dt must be in seconds (calculated from the IMU freq)
     """
 
-    def __init__ (self, beta = None, zeta = 0, q0 = None): 
+    def __init__ (self, beta = None, zeta = 0.03, q0 = None): 
         if beta is None: 
             gyro_error = np.deg2rad (5.0)
             beta = np.sqrt (3.0 / 4.0) * gyro_error
@@ -24,11 +24,11 @@ class MadgwickMARG:
         #normalize q (sqrt of square sum of all components = 1)
         self.q = self.normalize(np.array (q0, dtype = float))
 
-        #initial magnetic reference (this is updated after each iteration)
+        #initial magnetic reference (this shoud be updated after each iteration)
         self.bx = 1.0
         self.bz = 0.0 
 
-        #estimated gyroscope bias (rad / s)
+        #estimated gyroscope bias (if zeta !=0, this is used to compesnate the drift of the gyro)
         self.gyro_bias = np.zeros (3, dtype = float)
     
     @staticmethod
@@ -118,11 +118,11 @@ class MadgwickMARG:
     
     def update (self, gyro, accel, mag, dt): 
         """
-        This function runs each update of the filter
+        This function run each update of the filter
         
         Param: 
             gyro: angular velocity in rad / s
-            accel: acceleratation
+            accel: how fast the body frame rotate
             mag: magnetic field
 
         Output:
@@ -184,13 +184,14 @@ class MadgwickMARG:
         s1, s2, s3, s4 = gradient 
 
         if self.zeta != 0.0:
-            # Convert quaternion error direction into angular error.
-            w_err_x = two_q1*s2 - two_q2*s1 - two_q3*s4 + two_q4*s3
-            w_err_y = two_q1*s3 + two_q2*s4 - two_q3*s1 - two_q4*s2
-            w_err_z = two_q1*s4 - two_q2*s3 + two_q3*s2 - two_q4*s1
-
-            self.gyro_bias += self.zeta * np.array([w_err_x, w_err_y, w_err_z]) * dt
-            gyro = gyro - self.gyro_bias
+            q_error = np.array ([s1, s2, s3, s4])
+            gyro_error_quat = 2.0 * self.quaternion_product(
+                self.quaternion_conjugate(self.q),
+                q_error,
+            )
+            gyro_error = gyro_error_quat[1:4] #turn quaternion type to np.array
+            self.gyro_bias += self.zeta * gyro_error * dt
+            gyro = gyro - self.gyro_bias #compensate gyro drift
 
         wx, wy, wz = gyro
 
