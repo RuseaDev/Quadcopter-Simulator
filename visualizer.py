@@ -8,7 +8,7 @@ import sys
 plt.rcParams.update({
     'figure.dpi': 110,
     'axes.grid': True,
-    'axes.grid.alpha': 0.3,
+    'grid.alpha': 0.3,
     'axes.spines.top': False,
     'axes.spines.right': False,
 })
