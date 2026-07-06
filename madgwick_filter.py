@@ -130,6 +130,7 @@ class MadgwickMARG:
         """
 
         gyro = np.asarray (gyro, dtype = float)
+        gyro = np.deg2rad (gyro)
         accel = np.asarray (accel, dtype = float)
         mag = np.asarray (mag, dtype = float)
         dt = float (dt) 
