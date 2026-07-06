@@ -103,7 +103,7 @@ class MadgwickMARG:
 
     def update_magnetic_reference (self, mag_unit): 
         """
-        Filter will use this func to update the bx and bz paramters of the magnetic field.
+        Filter will use this func to update the x and z components of the magnetic field.
         """
         mag_quat = np.array ([0.0, mag_unit [0], mag_unit[1], mag_unit[2]])
         h = self.quaternion_product(
@@ -130,6 +130,7 @@ class MadgwickMARG:
         """
 
         gyro = np.asarray (gyro, dtype = float)
+        gyro = np.deg2rad (gyro)
         accel = np.asarray (accel, dtype = float)
         mag = np.asarray (mag, dtype = float)
         dt = float (dt) 
