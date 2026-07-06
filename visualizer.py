@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from scipy import stats
 from scipy.linalg import expm
+from pid_controller import CascadedController
 import sys
 
 plt.rcParams.update({
@@ -311,7 +312,7 @@ def run(
         t0 = 0.0, 
         t_end = time_length,
         dt = dt, 
-        input_func = default_input
+        input_func = CascadedController.update()
     )
 
     fig_state, _ = plot_state(df)
