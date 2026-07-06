@@ -2,6 +2,7 @@ import numpy as np
 from dataclasses import dataclass
 
 g = 9.81 # gravitational acceleration
+G = g
 
 """
 Our drone will be an X-configured drone.
@@ -149,8 +150,61 @@ class DronePlant:
                          dvx, dvy, dvz, 
                          dphi, dtheta, dpsi, 
                          dwx, dwy, dwz])
+    
+    def step(self, thrust, torques, dt):
+        """
+        Advance the plant by dt using RK4, holding thrust/torques
+        constant over the interval.
+        
+        Updates self.position / velocity / euler_angles / angular_velocity
+        in place and also returns the new 12 state vectors
+        """
+        state = np.concatenate([self.position, self.velocity, self.euler_angles, self.angular_velocity])
 
 
+        def f(t, y):
+
+            self.position = y[0:3]
+            self.velocity = y[3:6]
+            self.euler_angles = y[6:9]
+            return self.state_derivatives(thrust, torques)
+
+        new_state = RK4_step(f, 0.0, state, dt)
+
+        self.position = new_state[0:3]
+        self.velocity = new_state[3:6]
+        self.euler_angles = new_state[6:9]
+        self.angular_velocity = new_state[9:12]
+
+        return new_state
+    
+    def inverse_mixing(self, thrust, torques):
+        """
+        Invert motor_mixing(): solve for the motor speeds
+        that would produce the given total thrust and body torques
+        """
+
+        kt = self.config.kt
+        kb = self.config.kb
+
+        l = self.config.length / np.sqrt(2)
+        tau_roll, tau_pitch, tau_yaw = torques
+
+        M = np.array([
+            [kt,    kt,    kt,    kt],
+            [l*kt, -l*kt, -l*kt,  l*kt],
+            [l*kt,  l*kt, -l*kt, -l*kt],
+            [-kb,   kb,   -kb,    kb],
+        ])
+
+        omega_sq = np.linalg.solve(M, np.array([thrust, tau_roll, tau_pitch, tau_yaw]))
+        omega_sq = np.clip(omega_sq, 0.0, None)
+        return np.sqrt(omega_sq)
+dt = 0.01
+
+t = np.arange(0, 10, dt)
+
+print(t)
 # dt = 0.01
 
 # t = np.arange(0, 10, dt)
