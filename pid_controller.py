@@ -68,7 +68,7 @@ class PositionController:
 
     def __init__(self, config):
         self.config = config
-        self.pid_altitude = PID(kp=8, ki=2, kd=5, setpoint = 0)
+        self.pid_attitude = PID(kp=8, ki=2, kd=5, setpoint = 0)
         self.pid_x = PID(kp = 0.6, ki = 0.02, kd = 0.9, setpoint = 0)
         self.pid_y = PID(kp= 0.6, ki=0.02, kd = 0.9, setpoint=0)
 
@@ -85,11 +85,11 @@ class PositionController:
         rotation = np.cos(phi) * np.cos(theta)
 
         self.pid_attitude.setpoint = alt_des
-        accel_cmd = self.pid_altitude.update(altitude, dt)
+        accel_cmd = self.pid_attitude.update(altitude, dt)
 
         thrust = (m * (g + accel_cmd)) / rotation
         self.pid_x.setpoint = x_des
-        theta = self.pid_x.update(-x, dt)
+        theta = -self.pid_x.update(x, dt)
 
         self.pid_y.setpoint = y_des
         phi = self.pid_y.update(y, dt)
@@ -116,8 +116,10 @@ class AttitudeController:
         self.pid_theta.setpoint = theta_des
         w_y = self.pid_theta.update(theta, dt)
 
-        self.psi_psi.setpiont = psi_des
+        self.pid_psi.setpoint = psi_des
         w_z = self.pid_psi.update(psi, dt)
+
+        return np.array([w_x, w_y, w_z])
 
         
 
@@ -127,9 +129,9 @@ class RateController:
     Output: torques (tau_x, tau_y, tau_z)
     """
     def __init__(self, config):
-        self.pid_wx = PID(kp = 0, ki = 0, kd = 0, setpoint = 0)
-        self.pid_wy = PID(kp = 0, ki = 0, kd = 0, setpoint = 0)
-        self.pid_wz = PID(kp = 0, ki = 0, kd = 0, setpoint = 0)
+        self.pid_wx = PID(kp = 1.0, ki = 0.0, kd = 0.0, setpoint = 0)
+        self.pid_wy = PID(kp = 1.0, ki = 0.0, kd = 0.0, setpoint = 0)
+        self.pid_wz = PID(kp = 1.0, ki = 0.0, kd = 0.0, setpoint = 0)
 
 
     def update(self, att, plant: DronePlant, dt):
@@ -150,7 +152,7 @@ class RateController:
     
 class CascadedController:
 
-    def __init__(self, config, outer_rate_hz=50, attitude_rate_hz = 500)
+    def __init__(self, config, outer_rate_hz=50, attitude_rate_hz=500):
         self.position_control = PositionController(config)
         self.attitude_control = AttitudeController(config)
         self.rate_control = RateController(config)
@@ -177,12 +179,9 @@ class CascadedController:
             self.t_since_outer = 0.0
         
         if self.t_since_attitude >= self.attitude_period:
-            self.rate_des = self.attitude_control.updae(
+            self.rate_des = self.attitude_control.update(
                 self.att_des, plant, self.attitude_period)
             self.t_since_attitude = 0.0
         
-        torques = self.rate.ctrl.update(self.rate_des, plant, dt)
+        torques = self.rate_control.update(self.rate_des, plant, dt)
         return self.thrust, torques
-
-
-        

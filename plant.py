@@ -1,6 +1,8 @@
 import numpy as np
 from dataclasses import dataclass
 
+from quaternions import Quaternion
+
 g = 9.81 # gravitational acceleration
 G = g
 
@@ -26,6 +28,8 @@ class DroneConfig:
     kd: float
     kt: float # coefficient for tau_roll and tau_pitch
     kb: float # coefficient for tau_yaw
+
+
 
 """
 Rotational Matrix from body to world frame:
@@ -53,7 +57,38 @@ def w2b_rotation(phi, theta, psi):
 def b2w_rotatation(phi, theta, psi):
 
     return r_yaw(psi) @ r_pitch(theta) @ r_roll(phi)
-    
+
+"""
+Euler <-> Quaternion helpers
+"""
+def euler_to_quaternion(phi, theta, psi):
+    cr, sr = np.cos(phi/2), np.sin(phi / 2)
+    cp, sp = np.cos(theta /2), np.sin(theta / 2)
+    cy, sy = np.cos(psi /2), np.sin(psi / 2)
+
+    w = cr * cp * cy + sr * sp * sy
+    x = sr * cp * cy - cr * sp * sy
+    y = cr * sp * cy + sr * cp * sy
+    z = cr * cp * sy - sr * sp * cy
+ 
+    return Quaternion(w, x, y, z).normalize()
+
+def quaternion_to_euler(q):
+    w, x, y, z = q.w, q.x, q.y, q.z
+
+    sinr_cosp = 2 * (w * x + y * z)
+    cosr_cosp = 1 - 2 * (x * x + y * y)
+    phi = np.arctan2(sinr_cosp, cosr_cosp)
+ 
+    sinp = np.clip(2 * (w * y - z * x), -1.0, 1.0)
+    theta = np.arcsin(sinp)
+ 
+    siny_cosp = 2 * (w * z + x * y)
+    cosy_cosp = 1 - 2 * (y * y + z * z)
+    psi = np.arctan2(siny_cosp, cosy_cosp)
+ 
+    return np.array([phi, theta, psi])
+
 
 """
 RK4 integration method
