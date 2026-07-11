@@ -1,18 +1,50 @@
 import numpy as np
 from quaternions import Quaternion
 
+MPU6050_GYRO_NOISE_DENSITY = np.array([
+    6.625e-5,
+    5.934e-5,
+    6.050e-5,
+])
+
+MPU6050_GYRO_BIAS_STD = np.array([
+    1.674e-5,
+    2.301e-5,
+    1.462e-5,
+])
+
+def mpu6050 (sample_rate_hz = 100.0):
+    gyro_white_std = (
+        MPU6050_GYRO_NOISE_DENSITY 
+        * np.sqrt (sample_rate_hz)
+    )
+
+    gyro_axis_error = np.sqrt (
+        gyro_white_std ** 2
+        +
+        MPU6050_GYRO_BIAS_STD ** 2
+    )
+
+    gyro_error = np.mean (gyro_axis_error)
+    return np.sqrt (3.0 / 4.0) * gyro_error
+
 class MadgwickMARG:
     """
-    Madgwick filter using input data from gyroscope, accelerometer, and magnetometer.
+    Madgwick filter using input data from gyroscope, accelerometer, and magnetometer(optional).
     Quaternion order is [w, x, y, z]
     Gyroscope's unit has to be rad/s
     dt must be in seconds (calculated from the IMU freq)
     """
 
-    def __init__ (self, beta = None, zeta = 0.03, q0 = None): 
+    def __init__ (
+        self,
+        beta = None,
+        zeta = 5e-5,
+        q0 = None,
+        sample_rate_hz = 100.0,
+    ): 
         if beta is None: 
-            gyro_error = np.deg2rad (5.0)
-            beta = np.sqrt (3.0 / 4.0) * gyro_error
+            beta = mpu6050(sample_rate_hz)
 
         # Convert to float in case the input is 'int'
         self.beta = float(beta)
@@ -85,6 +117,36 @@ class MadgwickMARG:
             ],
         ])
     
+    @staticmethod
+    def objective_function (q: Quaternion, bx, bz, accel_dir, mag_dir):
+        ax, ay, az = accel_dir
+        mx, my, mz = mag_dir
+        q1, q2, q3, q4 = q
+        two_q1 = 2.0 * q1
+        two_q2 = 2.0 * q2
+        two_q3 = 2.0 * q3
+        two_q4 = 2.0 * q4
+        two_bx = 2.0 * bx
+        two_bz = 2.0 * bz
+
+        q1q2 = q1 * q2
+        q1q3 = q1 * q3
+        q1q4 = q1 * q4
+        q2q3 = q2 * q3
+        q2q4 = q2 * q4
+        q3q4 = q3 * q4
+
+        #Objective function: predicted gravity / magnetic directions minus measured directions
+
+        f1 = two_q2*q4 - two_q1*q3 - ax
+        f2 = two_q1*q2 + two_q3*q4 - ay
+        f3 = 1.0 - two_q2*q2 - two_q3*q3 - az
+        f4 = two_bx*(0.5 - q3*q3 - q4*q4) + two_bz*(q2q4 - q1q3) - mx
+        f5 = two_bx*(q2q3 - q1q4) + two_bz*(q1q2 + q3q4) - my
+        f6 = two_bx*(q1q3 + q2q4) + two_bz*(0.5 - q2*q2 - q3*q3) - mz
+
+        return f1, f2, f3, f4, f5, f6
+    
     def integrate_gyro_only(self, gyro, dt): 
         """
         This helper function is used when either the normalized value of magnetometer or accelerometer = 0 (causing division to zero). Then the filter will update quaternion with data from gyroscope
@@ -116,7 +178,7 @@ class MadgwickMARG:
         self.bz = hz
 
     
-    def update (self, gyro, accel, mag, dt): 
+    def update (self, gyro, accel, dt, mag = None): 
         """
         This function run each update of the filter
         
@@ -130,49 +192,88 @@ class MadgwickMARG:
         """
 
         gyro = np.asarray (gyro, dtype = float)
-        gyro = np.deg2rad (gyro)
         accel = np.asarray (accel, dtype = float)
-        mag = np.asarray (mag, dtype = float)
         dt = float (dt) 
 
         if dt <= 0.0: 
             return self.q.copy()
         
+        if mag is None:
+            return self.update_imu (gyro, accel, dt)
+        
+        mag = np.asarray(mag, dtype = float)
+
+        return self.update_marg (gyro, accel, mag, dt)
+    
+    def update_imu (self, gyro, accel, dt):
+        #Create objective function (but remove f4-6 from magnetometer)
         accel_norm = np.linalg.norm (accel)
+        if accel_norm == 0.0:
+            return self.integrate_gyro_only(gyro, dt)
+
+        f1, f2, f3, _, _, _ = self.objective_function(
+            self.q,
+            bx = 0, bz = 0, #set = 0 just to run the method
+            accel_dir = accel / accel_norm,
+            mag_dir = [0, 0, 0] #set 0 just to run,
+        )
+        objective = np.array ([f1, f2, f3])
+
+        #jacobian matrix, but take only first 3 components
+        jacobian = self.madgwick_jacobian(self.q, 0, 0)
+        jacobian = jacobian[0:3] #first 3 components
+        
+        #compute gradient
+        gradient = jacobian.T @ objective
+        gradient_norm = np.linalg.norm (gradient)
+        
+        #if there's too little error, then just update from gyroscope data
+        if (gradient_norm == 0.0):
+            return self.integrate_gyro_only(gyro, dt)
+        
+        gradient = gradient / gradient_norm #get gradient direction
+
+        #correct drift
+        if self.zeta != 0.0:
+            q_error = gradient
+            gyro_error_quat = 2.0 * self.quaternion_product(
+                self.quaternion_conjugate(self.q),
+                q_error,
+            )
+            gyro_error = gyro_error_quat[1:4]
+            self.gyro_bias += self.zeta * gyro_error * dt
+            gyro = gyro - self.gyro_bias
+
+        wx, wy, wz = gyro
+        q_dot_gyro = 0.5 * self.quaternion_product(
+            self.q,
+            np.array ([0.0, wx, wy, wz])
+        )
+        
+        #gradeint descent
+        q_dot = q_dot_gyro - self.beta * gradient
+        #integrate
+        self.q = self.normalize(self.q + q_dot * dt)
+        return self.q
+    
+    def update_marg(self, gyro, accel, mag, dt):
         mag_norm = np.linalg.norm (mag)
+        accel_norm = np.linalg.norm (accel)
 
         if accel_norm == 0.0 or mag_norm == 0.0: 
             return self.integrate_gyro_only(gyro, dt)
-        
-        ax, ay, az = accel / accel_norm 
-        mx, my, mz = mag / mag_norm 
 
-        q1, q2, q3, q4 = self.q
         bx, bz = self.bx, self.bz
+        mx, my, mz = mag / mag_norm #magnetic diretion
+        ax, ay, az = accel / accel_norm #acceleration direction
+        f1, f2, f3, f4, f5, f6 = self.objective_function(
+            self.q, 
+            bx, bz, 
+            accel_dir=[ax, ay, az], 
+            mag_dir = [mx, my, mz]
+        )
 
-        two_q1 = 2.0 * q1
-        two_q2 = 2.0 * q2
-        two_q3 = 2.0 * q3
-        two_q4 = 2.0 * q4
-        two_bx = 2.0 * bx
-        two_bz = 2.0 * bz
-
-        q1q2 = q1 * q2
-        q1q3 = q1 * q3
-        q1q4 = q1 * q4
-        q2q3 = q2 * q3
-        q2q4 = q2 * q4
-        q3q4 = q3 * q4
-
-        #Objective function: predicted gravity / magnetic directions minus measured directions
-
-        f1 = two_q2*q4 - two_q1*q3 - ax
-        f2 = two_q1*q2 + two_q3*q4 - ay
-        f3 = 1.0 - two_q2*q2 - two_q3*q3 - az
-        f4 = two_bx*(0.5 - q3*q3 - q4*q4) + two_bz*(q2q4 - q1q3) - mx
-        f5 = two_bx*(q2q3 - q1q4) + two_bz*(q1q2 + q3q4) - my
-        f6 = two_bx*(q1q3 + q2q4) + two_bz*(0.5 - q2*q2 - q3*q3) - mz
-
+        #compute gradient
         objective = np.array ([f1, f2, f3, f4, f5, f6])
         jacobian = self.madgwick_jacobian(self.q, bx, bz)
         gradient = jacobian.T @ objective 
@@ -184,6 +285,7 @@ class MadgwickMARG:
         gradient = gradient / gradient_norm 
         s1, s2, s3, s4 = gradient 
 
+        #cancel drift
         if self.zeta != 0.0:
             q_error = np.array ([s1, s2, s3, s4])
             gyro_error_quat = 2.0 * self.quaternion_product(
