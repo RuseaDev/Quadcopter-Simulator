@@ -86,13 +86,17 @@ class PositionController:
 
         self.pid_attitude.setpoint = alt_des
         accel_cmd = self.pid_attitude.update(altitude, dt)
+        accel_cmd = np.clip(accel_cmd, -self.ALT_ACCEl_LIMIT, self.ALT_ACCEl_LIMIT)
 
         thrust = (m * (g + accel_cmd)) / rotation
         self.pid_x.setpoint = x_des
-        theta = -self.pid_x.update(x, dt)
+        theta = -np.clip(self.pid_x.update(x, dt), -self.XY_ACCEL_LIMIT, self.XY_ACCEL_LIMIT)
 
         self.pid_y.setpoint = y_des
-        phi = self.pid_y.update(y, dt)
+        phi = np.clip(self.pid_y.update(y, dt), -self.XY_ACCEL_LIMIT, self.XY_ACCEL_LIMIT)
+
+        phi = np.clip(phi, -self.MAX_TILT, self.MAX_TILT)
+        theta = np.clip(theta, -self.MAX_TILT, self.MAX_TILT)
 
         return np.array([phi, theta, psi_des]), thrust
 

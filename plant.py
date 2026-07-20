@@ -235,20 +235,3 @@ class DronePlant:
         omega_sq = np.linalg.solve(M, np.array([thrust, tau_roll, tau_pitch, tau_yaw]))
         omega_sq = np.clip(omega_sq, 0.0, None)
         return np.sqrt(omega_sq)
-dt = 0.01
-
-t = np.arange(0, 10, dt)
-
-print(t)
-# dt = 0.01
-
-# t = np.arange(0, 10, dt)
-
-# print(t)
-
-
-
-
-
-
-

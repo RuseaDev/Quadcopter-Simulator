@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 """
 LQR.py
-======
+-------
 
 Linear-Quadratic Regulator for the X-configured drone defined in plant.py.
 
@@ -213,7 +213,7 @@ if __name__ == "__main__":
 
     # Start tipped over and off-center, with some initial spin.
     x0 = np.zeros(N_STATES)
-    x0[0:3] = [1.0, -0.5, 2.0]       # position offset
+    x0[0:3] = [5.0, -0.5, 2.0]       # position offset
     x0[6:9] = [0.3, -0.2, 0.5]       # roll, pitch, yaw offset (rad)
     x0[9:12] = [0.1, -0.1, 0.05]     # initial body rates (rad/s)
 
